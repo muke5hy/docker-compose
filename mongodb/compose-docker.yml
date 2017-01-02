@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  mongodb:
+    image: "mongo:3"
+    container_name: mongo
+    volumes:
+      - /data/mongodb:/data/db
+    networks:
+      - docker-net
+
+networks:
+  docker-net:
+    external: true

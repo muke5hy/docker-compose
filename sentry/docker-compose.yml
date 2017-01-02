@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+    redis:
+      image: sentry:latest
+      container_name: redis
+      volumes:
+        - /data/sentry:/var/lib/redis
+      ports:
+        - 9000:9000
+      networks:
+        - docker-net

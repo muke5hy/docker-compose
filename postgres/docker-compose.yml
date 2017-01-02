@@ -1,0 +1,21 @@
+# docker exec -ti postgres psql -U root
+# docker network create -d bridge docker-net
+version: '2'
+
+services:
+    postgres:
+      image: postgres:latest
+      container_name: postgres
+      ports:
+        - "5432:5432"
+      environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: root
+      volumes:
+        - /data/postgres:/var/lib/postgresql
+      networks:
+        - docker-net
+
+networks:
+  docker-net:
+    external: true

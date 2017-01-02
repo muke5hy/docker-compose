@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  web:
+    image: odoo:10.0
+    container_name: odoo
+    ports:
+      - "8069:8069"
+    environment:
+      - HOST=localhost
+      - USER=root
+      - PASSWORD=password
+    volumes:
+      - /data/odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    networks:
+      - docker-net
+
+networks:
+  docker-net:
+    external: true

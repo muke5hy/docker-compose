@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+    mysql.5.7:
+      image: mysql:5.7
+      container_name: mysql.5.7
+      volumes:
+        - /data/mysql:/var/lib/mysql
+#        - /usr/local/var/mysql:/var/lib/mysql
+        - ./conf.d/:/etc/mysql/conf.d/
+      environment:
+        - MYSQL_ROOT_PASSWORD=password
+      ports:
+        - "3307:3306"
+      networks:
+        - docker-net

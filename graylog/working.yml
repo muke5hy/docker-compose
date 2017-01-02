@@ -1,0 +1,34 @@
+version: '2'
+services:
+  mongodb:
+    image: "mongo:3"
+    container_name: mongodb
+    volumes:
+      - /data/mongodb:/data/db
+  elasticsearch:
+    image: "elasticsearch:2"
+    container_name: elasticsearch
+    command: "elasticsearch -Des.cluster.name='graylog'"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /data/elasticsearch:/usr/share/elasticsearch/data
+  graylog:
+    image: graylog2/server:2.1.1-1
+    volumes:
+      - /data/mongodb/journal:/usr/share/graylog/data/journal
+      - /data/graylog/config:/usr/share/graylog/data/config
+    environment:
+      GRAYLOG_PASSWORD_SECRET: somepasswordpepper
+      GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+    links:
+      - mongodb:mongo
+      - elasticsearch:elasticsearch
+    ports:
+      - "9000:9000"
+      - "12201/udp:12201/udp"
+      - "1514/udp:1514/udp"
+
+

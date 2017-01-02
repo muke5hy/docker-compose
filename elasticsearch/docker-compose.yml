@@ -1,0 +1,17 @@
+version: '2'
+services:
+  elasticsearch:
+    image: "elasticsearch:2"
+    container_name: elasticsearch
+    command: "elasticsearch -Des.cluster.name='graylog'"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /data/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - docker-net
+
+networks:
+  docker-net:
+    external: true
