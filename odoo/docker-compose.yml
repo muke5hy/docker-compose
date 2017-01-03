@@ -7,7 +7,7 @@ services:
     ports:
       - "8069:8069"
     environment:
-      - HOST=localhost
+      - HOST=postgres
       - USER=root
       - PASSWORD=password
     volumes:
