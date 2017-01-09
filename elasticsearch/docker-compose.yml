@@ -1,7 +1,7 @@
 version: '2'
 services:
   elasticsearch:
-    image: "elasticsearch:2"
+    image: elasticsearch:5-alpine
     container_name: elasticsearch
     command: "elasticsearch -Des.cluster.name='graylog'"
     ports:
