@@ -1,1 +1,0 @@
-Using docker for development.

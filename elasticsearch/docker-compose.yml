@@ -3,7 +3,6 @@ services:
   elasticsearch:
     image: elasticsearch:5-alpine
     container_name: elasticsearch
-    command: "elasticsearch -Des.cluster.name='graylog'"
     ports:
       - "9200:9200"
       - "9300:9300"
