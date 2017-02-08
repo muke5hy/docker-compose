@@ -1,3 +1,6 @@
+# docker exec -ti mysql:5.7 mysql -U root -ppassword
+# docker network create -d host docker-net
+
 version: '2'
 
 services:
@@ -9,8 +12,14 @@ services:
 #        - /usr/local/var/mysql:/var/lib/mysql
         - ./conf.d/:/etc/mysql/conf.d/
       environment:
-        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_ROOT_PASSWORD=admin
       ports:
-        - "3307:3306"
+        - "3306:3306"
       networks:
         - docker-net
+
+networks:
+  docker-net:
+    external: true
+
+

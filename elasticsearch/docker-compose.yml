@@ -1,15 +1,25 @@
 version: '2'
 services:
+#  elasticsearch:
+#    image: elasticsearch:5-alpine
+#    container_name: elasticsearch
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+#    volumes:
+#      - /data/elasticsearch:/usr/share/elasticsearch/data
+#    networks:
+#      - docker-net
   elasticsearch:
-    image: elasticsearch:5-alpine
-    container_name: elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - /data/elasticsearch:/usr/share/elasticsearch/data
-    networks:
-      - docker-net
+      image: elasticsearch:2-alpine
+      container_name: elasticsearch
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+      volumes:
+        - /data/elasticsearch/2.3:/usr/share/elasticsearch/data
+      networks:
+        - docker-net
 
 networks:
   docker-net:
