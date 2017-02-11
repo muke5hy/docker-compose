@@ -1,0 +1,26 @@
+# docker exec -ti postgres psql -U root
+# docker network create -d bridge docker-net
+version: "2"
+
+services:
+  sonarqube:
+    image: sonarqube:alpine
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - docker-net
+    environment:
+      - SONARQUBE_JDBC_USERNAME=root
+      - SONARQUBE_JDBC_PASSWORD=password
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://postgres:5432/sonar
+    volumes:
+      - /data/sonarqube/conf:/opt/sonarqube/conf
+      - /data/sonarqube/data:/opt/sonarqube/data
+      - /data/sonarqube/extensions:/opt/sonarqube/extensions
+      - /data/sonarqube/plugins:/opt/sonarqube/lib/bundled-plugins
+
+networks:
+  docker-net:
+    external: true
+
