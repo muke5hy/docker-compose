@@ -1,0 +1,9 @@
+#docker run -u zap -p  -i  zap.sh -daemon -host 0.0.0.0 -port 8080
+version: '2'
+
+services:
+    redis:
+      image: swaggerapi/swagger-editor
+      container_name: swagger
+      ports:
+        - 80:8080

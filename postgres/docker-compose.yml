@@ -1,4 +1,4 @@
-# docker exec -ti postgres psql -U root
+# docker exec -ti postgres psql jbl_scm -U root
 # docker network create -d bridge docker-net
 version: '2'
 

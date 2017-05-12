@@ -1,5 +1,6 @@
-# docker exec -ti mysql:5.7 mysql -U root -ppassword
+# docker exec -ti mysql.5.7 mysql -U root -padmin
 # docker network create -d host docker-net
+# docker exec -i mysql.5.7 mysql -uroot -padmin < dump.sql
 
 version: '2'
 
