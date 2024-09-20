@@ -1,0 +1,56 @@
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    volumes:
+      - ${HOME}/minio/data:/data
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=nimda
+      - MINIO_ROOT_PASSWORD=nimda@09!2021
+
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mayvent
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    labels:
+      - "traefik.enable=true"
+      # MINIO console
+      - "traefik.docker.network=docker-net"
+      - "traefik.http.routers.minioS.rule=Host(`minio.mukeshyadav.com`)"
+      - "traefik.http.routers.minioS.entrypoints=https"
+      - "traefik.http.routers.minioS.tls=true"
+      - "traefik.http.routers.minioS.tls.certresolver=cloudflare"
+      - "traefik.http.routers.minioS.tls.domains[0].main=*.mukeshyadav.com"
+      - "traefik.http.routers.minioS.service=minioService"
+      - "traefik.http.services.minioService.loadBalancer.server.port=9001"
+      - "traefik.http.services.minioService.loadbalancer.sticky.cookie.name=stickycookie"
+      - "traefik.http.services.minioService.loadbalancer.sticky.cookie.secure=true"
+
+      # MINIO api
+      - "traefik.http.routers.cdnS.tls=true"
+      - "traefik.http.routers.cdnS.rule=Host(`cdn.mukeshyadav.com`)"
+      - "traefik.http.routers.cdnS.entrypoints=https"
+      - "traefik.http.routers.cdnS.service=cdnService"
+      - "traefik.http.routers.cdnS.tls.certresolver=cloudflare"
+      - "traefik.http.services.cdnService.loadbalancer.server.port=9000"
+      - "traefik.http.services.cdnService.loadbalancer.sticky.cookie.name=stickycookie"
+      - "traefik.http.services.cdnService.loadbalancer.sticky.cookie.secure=true"
+
+networks:
+  docker-net:   
+    external: true
