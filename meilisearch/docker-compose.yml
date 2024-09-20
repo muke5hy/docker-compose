@@ -1,0 +1,13 @@
+version: '2.2'
+
+services:
+  meilisearch:
+    container_name: meilisearch
+    image: getmeili/meilisearch:v1.4
+    environment:
+      - EXTRA=1
+    restart: always
+    ports:
+      - 7700:7700
+    volumes:
+      - ./data:/meili_data

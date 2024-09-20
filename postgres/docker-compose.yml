@@ -1,26 +1,20 @@
 # docker exec -ti postgres psql jbl_scm -U root
 # docker network create -d bridge docker-net
-version: '3.1'
+version: '3.4'
 
 services:
-    postgres:
-      image: ankane/pgvector:latest
-      container_name: postgres
-      ports:
-        - "5432:5432"
-      environment:
-          POSTGRES_PASSWORD: postgres
-      volumes:
-        - ~/data/postgres:/var/lib/postgresql
-      networks:
-        - docker-net
-    adminer:
-      image: adminer
-      restart: always
-      ports:
-        - 8888:8080
-      networks:
-        - docker-net
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+    volumes:
+      - ~/data/postgres:/var/lib/postgresql
+    networks:
+      - docker-net
 
 networks:
   docker-net:
