@@ -1,0 +1,25 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:2.19.4
+    container_name: portainer
+    ports:
+      - 9443:9443
+    restart: always
+    networks:
+      - docker-net
+    volumes:
+      - ${HOME}/data/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainerS.rule=Host(`portainer.mukeshyadav.com`)"
+      - "traefik.http.routers.portainerS.entrypoints=https"
+      - "traefik.http.routers.portainerS.tls=true"
+      - "traefik.http.routers.portainerS.tls.certresolver=cloudflare"
+      - "traefik.http.routers.portainerS.tls.domains[0].main=*.mukeshyadav.com"
+      - "traefik.http.routers.portainerS.service=portainerService"
+      - "traefik.http.services.portainerService.loadBalancer.server.port=9000"
+
+networks:
+  docker-net:
+    external: true

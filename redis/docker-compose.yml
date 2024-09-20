@@ -1,15 +1,32 @@
-version: '2'
-
 services:
-    redis:
-      image: redis:latest
-      container_name: redis
-      volumes:
-        - /data/redis:/var/lib/redis
-      ports:
-        - "6379:6379"
-      networks:
-        - docker-net
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    volumes:
+      - ${HOME}/data/redis:/data
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - docker-net
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.redisS.entrypoints=https"
+      - "traefik.http.routers.redisS.tls=true"
+      - "traefik.http.routers.redisS.tls.certresolver=cloudflare"
+      - "traefik.http.routers.redisS.service=redisService"
+      - "traefik.http.services.redisService.loadBalancer.server.port=6379"
 
 networks:
   docker-net:

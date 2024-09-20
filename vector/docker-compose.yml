@@ -1,0 +1,23 @@
+services:
+  vector:
+    image: timberio/vector:0.36.0-alpine
+    container_name: vector
+    volumes:
+      - ${HOME}/data/vector:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./vector.yml:/etc/vector/vector.yml
+    restart: always
+    command: [ "-c", "/etc/vector/vector.yml" ]
+    environment:
+      - VECTOR_LOG=debug
+    networks:
+      - docker-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vectorS.tls=true"
+      - "traefik.http.routers.vectorS.service=vectorService"
+      - "traefik.http.services.vectorService.loadBalancer.server.port=9443"
+
+networks:
+  docker-net:
+    external: true

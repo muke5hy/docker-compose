@@ -1,13 +1,24 @@
-version: '2.2'
-
 services:
   meilisearch:
+    image: getmeili/meilisearch:v1.7.3
     container_name: meilisearch
-    image: getmeili/meilisearch:v1.4
-    environment:
-      - EXTRA=1
-    restart: always
-    ports:
-      - 7700:7700
     volumes:
-      - ./data:/meili_data
+      - ${HOME}/data/meilisearch:/meili_data
+    restart: always
+    environment:
+      - MEILI_MASTER_KEY=dsfsd213sdfs1312Sf2fv
+    networks:
+      - docker-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.meilisearchS.rule=Host(`meilisearch.mukeshyadav.com`)"
+      - "traefik.http.routers.meilisearchS.entrypoints=https,http"
+      - "traefik.http.routers.meilisearchS.tls=true"
+      - "traefik.http.routers.meilisearchS.tls.certresolver=cloudflare"
+      - "traefik.http.routers.meilisearchS.tls.domains[0].main=*.mukeshyadav.com"
+      - "traefik.http.routers.meilisearchS.service=meilisearchService"
+      - "traefik.http.services.meilisearchService.loadBalancer.server.port=7700"
+
+networks:
+  docker-net:
+    external: true

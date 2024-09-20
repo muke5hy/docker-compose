@@ -1,0 +1,23 @@
+api:
+  enabled: true
+sources:
+  docker_logs:
+    type: docker_logs
+    docker_host: "/var/run/docker.sock"
+sinks:
+  zinc:
+    type: "http"
+    inputs:
+      - docker_logs
+    uri: "https://openobserve.mukeshyadav.com/api/default/default/_json"
+    method: "post"
+    auth:
+      strategy: "basic"
+      user: "mak.gnu@gmail.com"
+      password: "JS6IOYAwF0JYWDvQ"
+    compression: "gzip"
+    encoding:
+      codec: "json"
+      timestamp_format: "rfc3339"
+    healthcheck:
+      enabled: true
