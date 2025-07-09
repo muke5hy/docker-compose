@@ -1,17 +1,17 @@
-version: '3.1'
-
 services:
   mysql:
     container_name: mysql
     restart: always
-    image: mysql:8.4.0
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+    image: mysql:9.3.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # TODO: Change this
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASS: ${MYSQL_PASS}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: mydb
     volumes:
-      - ${DATA_DIR}/mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
+      - ./conf.d:/etc/mysql/conf.d
     ports:
       - "3306:3306"
     networks:
